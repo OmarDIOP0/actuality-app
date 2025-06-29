@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Test DaisyUI</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.js"></script>
+  <script>
+    tailwind.config = {
+      plugins: [require("daisyui")],
+      daisyui: {
+        themes: ["light", "dark"],
+      },
+    }
+  </script>
+</head>
+<body>
+  <div class="p-8">
+    <button class="btn btn-primary">Bouton DaisyUI</button>
+    <button class="btn btn-secondary ml-4">Secondaire</button>
+    <button class="btn btn-accent ml-4">Accent</button>
+  </div>
+</body>
+</html>
