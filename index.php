@@ -1,38 +1,92 @@
-<?php
+<?php 
 require_once 'connexion.php';
-require_once 'header.php';
 
-$sql = "SELECT * FROM categorie";
-$stmt = $pdo->query($sql);
-$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$categorieId = isset($_GET['categorie_id']) ? intval($_GET['categorie_id']) : null;
+if($categorieId !== null) {
+  $stmtCat = $pdo->prepare("SELECT libelle FROM categorie WHERE id = ?");
+  $stmtCat->execute([$categorieId]);
+  $categorie = $stmtCat->fetch(PDO::FETCH_ASSOC);
+
+  $stmt = $pdo->prepare("SELECT * FROM article WHERE categorie = ? ORDER BY dateCreation DESC");
+  $stmt->execute([$categorieId]);
+  $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+else{
+  $categorie = ['libelle' => 'Toutes les catégories'];
+  $stmt = $pdo->query("SELECT * FROM article ORDER BY dateCreation DESC");
+  $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Categories</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Test DaisyUI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@3.9.4/dist/full.css" rel="stylesheet" type="text/css" />
+    <script>
+    tailwind.config = {
+        plugins: [require("daisyui")],
+        daisyui: {
+        themes: ["light", "dark"],
+        },
+    }
+    </script>
 </head>
 <body>
-    <div class="container mx-auto p-4">
-        <h1 class="text-2xl font-bold mb-4">Categories</h1>
-        <?php if (empty($categories)): ?>
-            <p class="text-gray-600">No categories available.</p>
+  <?php include 'navbar.php'; ?>
 
-        <?php else: ?>
-            <ul class="list-disc pl-5">
-                <?php foreach ($categories as $category): ?>
-                    <li class="mb-2">
-                        <a href="articles.php?categorie_id=<?php echo $category['id']; ?>" class="text-blue-500 hover:underline">
-                            <?php echo htmlspecialchars($category['libelle']); ?>
-                        </a>
-                    </li>
-                <?php endforeach; ?>
-            </ul>
-        <?php endif; ?>
-    </div>
-    <footer class="mt-8 text-center">
-        <p class="text-gray-600">© 2023 Actuality App. All rights reserved.</p>
-    </footer>
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-6">
+      Articles dans la catégorie : 
+      <span class="text-primary"><?= htmlspecialchars($categorie['libelle'] ?? 'Inconnue') ?></span>
+    </h1>
+
+    <?php if (empty($articles)): ?>
+      <div class="alert alert-info shadow-lg">
+        <span>Aucun article disponible pour cette catégorie.</span>
+      </div>
+    <?php else: ?>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <?php foreach ($articles as $article): 
+          $modalId = 'modal_' . $article['id']; // Création d'un ID unique pour chaque modal
+        ?>
+          <div class="card bg-base-200 shadow-lg">
+            <div class="card-body">
+              <h2 class="card-title"><?= htmlspecialchars($article['titre']) ?></h2>
+              <p class="text-sm text-gray-500 mb-2">
+                Publié le <?= date('d/m/Y à H:i', strtotime($article['dateCreation'])) ?>
+              </p>
+              <p class="line-clamp-4"><?= nl2br(htmlspecialchars($article['contenu'])) ?></p>
+              <div class="card-actions justify-end mt-4">
+                <button onclick="document.getElementById('<?= $modalId ?>').showModal()" class="btn btn-primary btn-sm">
+                  voir plus
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modal DaisyUI -->
+          <dialog id="<?= $modalId ?>" class="modal">
+            <div class="modal-box max-w-2xl">
+              <h3 class="font-bold text-lg"><?= htmlspecialchars($article['titre']) ?></h3>
+              <p class="text-sm text-gray-500 mb-2">
+                Publié le <?= date('d/m/Y à H:i', strtotime($article['dateCreation'])) ?>
+              </p>
+              <p class="py-4 whitespace-pre-line"><?= nl2br(htmlspecialchars($article['contenu'])) ?></p>
+              <div class="modal-action">
+                <form method="dialog">
+                  <button class="btn">Fermer</button>
+                </form>
+              </div>
+            </div>
+          </dialog>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
+  </div>
 </body>
 </html>
