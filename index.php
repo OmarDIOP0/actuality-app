@@ -62,9 +62,13 @@ else{
               </p>
               <p class="line-clamp-4"><?= nl2br(htmlspecialchars($article['contenu'])) ?></p>
               <div class="card-actions justify-end mt-4">
-                <button onclick="document.getElementById('<?= $modalId ?>').showModal()" class="btn btn-primary btn-sm">
+                <!-- <button onclick="document.getElementById('<?= $modalId ?>').showModal()" class="btn btn-primary btn-sm">
                   voir plus
-                </button>
+                </button> -->
+                <button>
+                  <a href="detail-article.php?categorie_id=<?= $article['id'] ?>" class="btn btn-primary btn-sm">
+                    Voir plus
+                  </a>
               </div>
             </div>
           </div>
