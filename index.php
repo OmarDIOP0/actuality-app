@@ -52,7 +52,7 @@ else{
     <?php else: ?>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <?php foreach ($articles as $article): 
-          $modalId = 'modal_' . $article['id']; // Création d'un ID unique pour chaque modal
+          // $modalId = 'modal_' . $article['id']; 
         ?>
           <div class="card bg-base-200 shadow-lg">
             <div class="card-body">
@@ -62,9 +62,6 @@ else{
               </p>
               <p class="line-clamp-4"><?= nl2br(htmlspecialchars($article['contenu'])) ?></p>
               <div class="card-actions justify-end mt-4">
-                <!-- <button onclick="document.getElementById('<?= $modalId ?>').showModal()" class="btn btn-primary btn-sm">
-                  voir plus
-                </button> -->
                 <button>
                   <a href="detail-article.php?categorie_id=<?= $article['id'] ?>" class="btn btn-primary btn-sm">
                     Voir plus
@@ -72,22 +69,6 @@ else{
               </div>
             </div>
           </div>
-
-          <!-- Modal DaisyUI -->
-          <dialog id="<?= $modalId ?>" class="modal">
-            <div class="modal-box max-w-2xl">
-              <h3 class="font-bold text-lg"><?= htmlspecialchars($article['titre']) ?></h3>
-              <p class="text-sm text-gray-500 mb-2">
-                Publié le <?= date('d/m/Y à H:i', strtotime($article['dateCreation'])) ?>
-              </p>
-              <p class="py-4 whitespace-pre-line"><?= nl2br(htmlspecialchars($article['contenu'])) ?></p>
-              <div class="modal-action">
-                <form method="dialog">
-                  <button class="btn">Fermer</button>
-                </form>
-              </div>
-            </div>
-          </dialog>
         <?php endforeach; ?>
       </div>
     <?php endif; ?>
