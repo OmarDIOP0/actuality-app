@@ -1,9 +1,6 @@
 <?php
-require_once 'connexion.php';
-
-$sql = "SELECT * FROM categorie";
-$stmt = $pdo->query($sql);
-$categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+require_once 'model/Categorie.php';
+$categories = Categorie::getAllCategories();
 ?>
 
 <div class="navbar bg-base-100 shadow-md">
