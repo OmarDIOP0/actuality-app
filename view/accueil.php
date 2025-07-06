@@ -1,5 +1,5 @@
 <?php 
-require_once 'view/navbar.php';
+require_once 'view/partials/navbar.php';
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +20,6 @@ require_once 'view/navbar.php';
     </script>
 </head>
 <body>
-  <?php include 'navbar.php'; ?>
 
   <div class="container mx-auto px-4 py-8">
     <h1 class="text-3xl font-bold mb-6">
@@ -46,7 +45,7 @@ require_once 'view/navbar.php';
               <p class="line-clamp-4"><?= nl2br(htmlspecialchars($article['contenu'])) ?></p>
               <div class="card-actions justify-end mt-4">
                 <button>
-                  <a href="detail-article.php?categorie_id=<?= $article['id'] ?>" class="btn btn-primary btn-sm">
+                  <a href="index.php?action=detail&id=<?= $article['id'] ?>" class="btn btn-primary btn-sm">
                     Voir plus
                   </a>
               </div>

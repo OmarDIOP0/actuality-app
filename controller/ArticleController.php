@@ -1,5 +1,4 @@
 <?php 
-require_once 'connexion.php';
 require_once 'model/Article.php';
 require_once 'model/Categorie.php';
 
@@ -34,4 +33,3 @@ class ArticleController {
         exit;
     }
 }
-?>
