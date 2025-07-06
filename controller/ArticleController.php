@@ -13,7 +13,7 @@
             $categorie = ['libelle' => 'Toutes les catégories'];
             $article = Article::getAllArticles();
         }
-        require_once 'view/index.php';
+        require_once 'view/accueil.php';
        }
     }
 ?>
